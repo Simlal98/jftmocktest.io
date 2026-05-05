@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>जापान दूधालु गाई MCQ क्विज - १०० प्रश्न</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.95);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 800px;
+            width: 100%;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .quiz-container {
+            background: rgba(52, 73, 94, 0.95);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #2c3e50;
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+
+        body.dark-mode .header h1 {
+            color: #ecf0f1;
+        }
+
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .timer {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #e74c3c;
+            min-width: 80px;
+        }
+
+        body.dark-mode .timer {
+            color: #e74c3c;
+        }
+
+        .progress-bar {
+            flex: 1;
+            height: 8px;
+            background: #ecf0f1;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 0 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #27ae60, #2ecc71);
+            width: 0%;
+            transition: width 0.3s ease;
+            border-radius: 10px;
+        }
+
+        .dark-toggle {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        .dark-toggle:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .question-container {
+            margin-bottom: 30px;
+        }
+
+        .question-number {
+            background: #3498db;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-block;
+            margin-bottom: 15px;
+        }
+
+        body.dark-mode .question-number {
+            background: #2980b9;
+        }
+
+        .question {
+            font-size: 1.3em;
+            font-weight: 600;
+            line-height: 1.5;
+            margin-bottom: 25px;
+            color: #2c3e50;
+        }
+
+        body.dark-mode .question {
+            color: #ecf0f1;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .option {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            padding: 18px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .option {
+            background: #34495e;
+            border-color: #4a5f77;
+            color: #ecf0f1;
+        }
+
+        .option:hover {
+            background: #e3f2fd;
+            border-color: #2196f3;
+            transform: translateX(5px);
+        }
+
+        body.dark-mode .option:hover {
+            background: #4a5f77;
+            border-color: #3498db;
+        }
+
+        .option.selected {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+
+        .option.correct {
+            background: #27ae60;
+            color: white;
+            border-color: #229954;
+        }
+
+        .option.wrong {
+            background: #e74c3c;
+            color: white;
+            border-color: #c0392b;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: #27ae60;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .result-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .score {
+            font-size: 4em;
+            font-weight: 800;
+            background: linear-gradient(45deg, #27ae60, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 20px;
+        }
+
+        .score-text {
+            font-size: 1.5em;
+            color: #2c3e50;
+            margin-bottom: 30px;
+        }
+
+        body.dark-mode .score-text {
+            color: #ecf0f1;
+        }
+
+        .review-btn {
+            margin-top: 20px;
+        }
+
+        @media (max-width: 600px) {
+            .quiz-container {
+                padding: 20px;
+                margin: 10px;
+            }
+
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .question {
+                font-size: 1.1em;
+            }
+
+            .controls {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .progress-bar {
+                order: -1;
+                width: 100%;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .pulse {
+            animation: pulse 0.6s ease-in-out;
+        }
+    </style>
+</head>
+<body>
+    <div class="quiz-container" id="quizContainer">
+        <div class="header">
+            <h1>🐄 जापान दूधालु गाई MCQ क्विज</h1>
+            <p>१०० प्रश्नहरूबाट १० सेकेन्डको टाइमर सहितको क्विज</p>
+        </div>
+
+        <div class="controls">
+            <div class="timer" id="timer">10</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <button class="dark-toggle" id="darkToggle">🌙</button>
+        </div>
+
+        <div class="question-container" id="questionContainer">
+            <!-- Questions will be loaded here -->
+        </div>
+
+        <div class="nav-buttons" id="navButtons">
+            <!-- Navigation buttons will be loaded here -->
+        </div>
+
+        <div class="result-container hidden" id="resultContainer">
+            <!-- Results will be shown here -->
+        </div>
+    </div>
+
+    <script>
+        // Complete 100 Questions Dataset
+        const questions = [
+            {
+                question: "जापानको दूधालुगाईको सबैभन्दा सामान्य जात कुन हो?",
+                options: ["जसी", "होलस्टिन (Holstein)", "ब्राउन स्विस"],
+                answer: 1
+            },
+            {
+                question: "जापानमा दूधालुगाईले एक वर्षमा औसत कति लिटर दूध उत्पादन गर्छ?",
+                options: ["५,०००kg", "८,०००kg भन्दा बढी", "१०,०००kg भन्दा बढी"],
+                answer: 1
+            },
+            {
+                question: "एक पिकवा सोभन्दा बढी लबयाइसकेको दूधालुगाईलाई के भलन्न?",
+                options: ["पहिलो बेते गाई", "गाई", "बार्री"],
+                answer: 1
+            },
+            {
+                question: "पहिलो पिकल बयाउने गाईलाई के भलन्न?",
+                options: ["पहिलो बेते गाई", "बयटक गाई", "तरुनी गाई"],
+                answer: 0
+            },
+            {
+                question: "जापानमा धेरै गाई भएको डेरी फार्मलाई के भलन्न?",
+                options: ["सानो फार्म", "मेगा फार्म", "परिवारिक फार्म"],
+                answer: 1
+            },
+            {
+                question: "सन् २०१४ मा जापानको एक जना डेरी कृषकले औसत कति गाई पाल्थ्यो?",
+                options: ["३८ वटा", "४८ वटा", "६० वटा"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको बार्री/बार्लाई ६ महिनासम्म के भलन्न?",
+                options: ["बार्री", "तरुनी गाई", "बयटक गाई"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईलाई पहिलो पिकल गर्भाधान कलम महिनामा गरिन्न?",
+                options: ["८–१० महिना", "१४–१५ महिना", "२०–२२ महिना"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको गर्भधारण अवधि कति हुनु?",
+                options: ["२१० दिन", "२८० दिन", "३६५ दिन"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईले लबयाएपछि कति दिन सम्म दूध लिदिन्छ?",
+                options: ["लगभग १ वर्ष", "लगभग ६ महिना", "लगभग २ वर्ष"],
+                answer: 0
+            },
+            {
+                question: "दूध दुलहरहेको गाईलाई अको गर्भाधान कलहले गरिन्न?",
+                options: ["लबयाउनु अगाडि", "दूध दुलहरहेको बेला", "दूध दुँहने पछि"],
+                answer: 1
+            },
+            {
+                question: "\"गर्भश खाली रहेको दिन\" भन्नाले के बुझिन्छ?",
+                options: ["लबयाएपछि अण्डा लिने चक्र नभएको अवधि", "सुक्खा अवधि", "दूध नलिने अवधि"],
+                answer: 0
+            },
+            {
+                question: "जापानमा दूधालुगाईको दूध उत्पादन अवधि (बेतसङ्ख्या) कति छ?",
+                options: ["बढ्दै छ", "घट्दै छ", "स्थिर छ"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको दूध उत्पादन अवधि घट्नुको मुख्य कारण के हो?",
+                options: ["सुनेलो(mastitis)", "कम आहार", "धेरै व्यायाम"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईको आहारका दुई मुख्य प्रकार के–के हुन्?",
+                options: ["कन्सन्ट्रेटेड दाना र रफेज", "मकै र पराल", "साइलेज र घाँस"],
+                answer: 0
+            },
+            {
+                question: "जापानमा सन्तुलित दानाको मुख्य अन्न कुन हो?",
+                options: ["जौ", "मकै", "गहुँ"],
+                answer: 1
+            },
+            {
+                question: "दूधको गुणस्तर जाँच गर्दा कुन तत्त्व मापन गरिँदैन?",
+                options: ["दूधको फ्याट अनुपात", "दूधको रङ्ग", "सोम्याटिक सेलको सङ्ख्या"],
+                answer: 1
+            },
+            {
+                question: "होलस्टिन गाईको लालग आनन्ददायी तापक्रम कति हो?",
+                options: ["५–१०°C", "१३–१८°C", "२५–३०°C"],
+                answer: 1
+            },
+            {
+                question: "उच्च तापक्रम(३०°C)मा दूधालुगाईको दूध उत्पादनमा के असर पर्छ?",
+                options: ["दूधको परिमाण बढ्छ", "दूधको परिमाण घट्छ", "कुनै असर पर्दैन"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको सामान्य शरीरको तापक्रम कति हुनु?",
+                options: ["३६.५°C", "३८.५°C", "४०.५°C"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईलाई गमिबाट बचाउन कुन उपाय प्रभावकारी छ?",
+                options: ["पङ्खा पानी छर्कने", "धेरै मल दिने", "ऊनी कपडा लगाउने"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईको रुमेन भन्नाले के बुझिन्छ?",
+                options: ["पहिलो भुँडी", "दोस्रो भुँडी", "तेस्रो भुँडी"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईको \"उग्राउने\" प्रक्रिया के हो?",
+                options: ["खाएको आहार फकाएर चपाउने", "पानी पिउने", "सुत्ने"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईको खुट्टाको रोगलाई के भलन्न?",
+                options: ["लालमुखी रिस", "धुनेलो(mastitis)", "एलसिडोसिस"],
+                answer: 0
+            },
+            {
+                question: "धुनेलो भएको गाईको दूधमा केको सङ्ख्या बढ्छ?",
+                options: ["प्रोटिन", "सोम्याटिक सेल", "फ्याट"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको प्रजनन चक्र कति दिनको हुन्छ?",
+                options: ["१४ दिन", "२१ दिन", "२८ दिन"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाई उत्तेजित(estrus) भएको बेला कस्तो व्यवहार देखाउँछ?",
+                options: ["अरू गाईमा चढ्ने", "खाना नखाने", "लड्ने"],
+                answer: 0
+            },
+            {
+                question: "गर्भाधान परीक्षणले के निर्धारण गर्छ?",
+                options: ["दूधको गुणस्तर", "अण्डा लिने चक्र भएको", "गाईको तौल"],
+                answer: 1
+            },
+            {
+                question: "लबयाएको गाईबाट जन्मने बाछोको औसत तौल कति हुन्छ?",
+                options: ["३०kg", "४५kg", "६०kg"],
+                answer: 1
+            },
+            {
+                question: "बाछोलाई लबगौती दूध(colostrum) कति दिन खुवाउनुपर्छ?",
+                options: ["१ दिन", "३ दिन", "१ हप्ता"],
+                answer: 1
+            },
+            {
+                question: "लबगौती दूधमा कुन तत्त्व धेरै हुन्छ जसले रोग प्रतिरोधात्मक क्षमता दिन्छ?",
+                options: ["फ्याट", "इम्युनोग्लोबुलिन", "लचनी"],
+                answer: 1
+            },
+            {
+                question: "\"छाँडो दूध छुडाउने अवधि\"मा बाछोलाई कति हप्ता सम्म दूध छुडाइन्छ?",
+                options: ["२ हप्ता", "६ हप्ता", "१२ हप्ता"],
+                answer: 1
+            },
+            {
+                question: "बाछोलाई रोगबाट बचाउन कस्तो वातावरण चाहिन्छ?",
+                options: ["सफा, हावा घाम लाग्ने", "अँध्यारो र लचिलो", "भिजेको र फोहोर"],
+                answer: 0
+            },
+            {
+                question: "बाछो हुक्न प्रयोग हुने उपकरणको नाम के हो?",
+                options: ["काफ ह्याच", "मिल्किंग पर्लर", "बल्क कूलर"],
+                answer: 0
+            },
+            {
+                question: "दूधालुगाईको बडी कन्डिसन स्कोर (BCS) को दायरा कति हुन्छ?",
+                options: ["१.०–३.०", "२.०–५.०", "५.०–१०.०"],
+                answer: 1
+            },
+            {
+                question: "लबयाउने बेलामा गाईको BCS कति हुनुपर्छ?",
+                options: ["२.०", "३.५", "४.५"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईको मलमूत्रको ठोस भागलाई के भलन्न?",
+                options: ["टलरी", "कम्पोस्ट", "तरल पदार्थ"],
+                answer: 1
+            },
+            {
+                question: "राम्रो कम्पोस्ट बनाउन के आवश्यक छ?",
+                options: ["अक्सिजनको आपूर्ति", "पानीको कमी", "प्रकाश"],
+                answer: 0
+            },
+            {
+                question: "कम्पोस्टको तापक्रम कति पुग्दा रोगाणु मर्छन्?",
+                options: ["४०–५०°C", "७०–८०°C", "१००°C"],
+                answer: 1
+            },
+            {
+                question: "गाईलाई गोठमा बाँधेर पाल्ने विधिलाई के भलन्न?",
+                options: ["फ्री-स्टल", "बाँधेर पाल्ने विधि(tie-stall)", "फ्री-बार्न"],
+                answer: 1
+            },
+            {
+                question: "फ्री-बार्न गोठको विशेषता के हो?",
+                options: ["गाई नबाँधि हिँड्न पाउँछन्", "प्रत्येक गाईको बेड हुन्छ", "दूध दुल्हने ठाउँ सुट्टै हुँदैन"],
+                answer: 0
+            },
+            {
+                question: "मिल्किंग पर्लर के हो?",
+                options: ["दूध दुल्हने सुट्टै कोठा", "बाछा राख्ने ठाउँ", "आहार भण्डारण"],
+                answer: 0
+            },
+            {
+                question: "दूधालु गाईको दूध उत्पादन सबैभन्दा बढी कुन हप्तामा हुन्छ?",
+                options: ["२–३ हप्ता", "५–७ हप्ता", "१०–१२ हप्ता"],
+                answer: 1
+            },
+            {
+                question: "सुक्खा अवधि (dry period) कति दिनको हुनुपर्छ?",
+                options: ["३० दिन", "६० दिन", "९० दिन"],
+                answer: 1
+            },
+            {
+                question: "दूधालु गाईको रुमेनमा कुन ग्यासको कारण एल्सिडोसिस हुन्छ?",
+                options: ["मिथेन", "ल्याक्टिक एसिड", "अमोनिया"],
+                answer: 1
+            },
+            {
+                question: "लालमुखी रिस रोग कहाँ हुन्छ?",
+                options: ["खुरमा", "सुनमा", "पेटमा"],
+                answer: 0
+            },
+            {
+                question: "एबोमासल डिस्प्लेसमेन्ट भन्नाले के बुझिन्छ?",
+                options: ["पेटको रोग", "चौथो भुँडीको टिपाइ परिवर्तन", "फोक्सोको रोग"],
+                answer: 1
+            },
+            {
+                question: "दूधालुगाईलाई धेरै अन्न खुवाउँदा के हुन सक्छ?",
+                options: ["रुमेन एल्सिडोसिस", "दूध बढ्छ", "रोग प्रतिरोध बढ्छ"],
+                answer: 0
+            },
+            {
+                question: "दूधको बल्क कूलर(bulkcooler)को तापक्रम कति राखिन्छ?",
+                options: ["१०°C", "४.४°C", "२०°C"],
+                answer: 1
+            },
+            {
+                question: "दूध दुँह्नु अगाडि सुतको सफाइको लागि के प्रयोग गरिन्छ?",
+                options: ["कीटाणुनाशक औषधि", "पानी मात्र", "साबुन"],
+                answer: 0
+            },
+            {
+                question: "प्री-डिपिङ(pre-dipping)को उद्देश्य के हो?",
+                options: ["सुतलाई कीटाणु मुक्त गर्नु", "दूध तताउनु", "गाईलाई शान्त बनाउनु"],
+                answer: 0
+            },
+            {
+                question: "ओभर-मिल्किङ(over-milking) गर्नु हुँदैन किनभने यसले के गर्छ?",
+                options: ["दूध बढ्छ", "सुतको मुख्य भागमा चोट पुग्छ", "गाई राम्रो हुन्छ"],
+                answer: 1
+            },
+            {
+                question: "दूध दुल्हसके पछि पोस्ट-डिपिङ किन गरिन्छ?",
+                options: ["सुतलाई अर्को पिक सम्म बचाउन", "दूध तातो राख्न", "गाईलाई दूध लिने उत्तेजना दिन"],
+                answer: 0
+            },
+            {
+                question: "उत्तेजित गाई(estrus)को सही संकेत के हो?",
+                options: ["कराउने", "टट्याल्डिङ इटिस(अरूमा चढ्दा बलसेहने)", "खाना नखाने"],
+                answer: 1
+            },
+            {
+                question: "डेरी फार्ममा दैनिक कामको सूचीमा के पर्दैन?",
+                options: ["दूध दुँहने", "आहार दिने", "बाछोलाई भ्याक्सिन लगाउने"],
+                answer: 2
+            },
+            {
+                question: "गोठको पाइवेस फराक राख्नुको मुख्य कारण के हो?",
+                options: ["गाईलाई हिँड्न सजिलो", "रोग लक्षण नियन्त्रण", "दूधको गुणस्तर बढाउन"],
+                answer: 1
+            },
+            {
+                question: "गाईको आँखा नरम भए टकू लक्षण हुन सक्छ?",
+                options: ["रक्त अल्पता", "धेरै दूध", "गर्भधारण"],
+                answer: 0
+            },
+            {
+                question: "गाईको नाकबाट पहेंलो सँगान आउनुको लक्षण हो?",
+                options: ["श्वासप्रश्वासको रोग", "पाचन रोग", "राम्रो को रोग"],
+                answer: 0
+            },
+            {
+                question: "गाईको पुच्छरको फेदमा फोहोरिनुको संकेत हो?",
+                options: ["पखाला", "कलेजो खराब", "धेरै खाना"],
+                answer: 0
+            },
+            {
+                question: "गाईले मुख खोलेर सास फेर्नुको लक्षण हो?",
+                options: ["श्वासप्रश्वासको रोग", "गमि", "तिक्त"],
+                answer: 0
+            },
+            {
+                question: "गाईको रेक्टल तापक्रम ४०°C भन्दा माथि हुनुले जनाउँछ?",
+                options: ["सामान्य", "ज्वरो", "हाइपोथर्मिया"],
+                answer: 1
+            },
+            {
+                question: "गाईको रंग लस्रोर चमक नहुनुको लक्षण हो?",
+                options: ["कुपोषण", "धेरै तेल", "टट्टी"],
+                answer: 0
+            },
+            {
+                question: "गाईलाई खुर काट्नु किन आवश्यक छ?",
+                options: ["हिँड्न सजिलो बनाउन", "दूध बढाउन", "रंग सुन्दर बनाउन"],
+                answer: 0
+            },
+            {
+                question: "गाईको सुतको नलजक पुग्दा कस्तो व्यवहार गर्छ?",
+                options: ["अचानक नलजक जाने", "नरम टवरले बोली अगा डबाई जाने", "पराल डबाई हात हाल्ने"],
+                answer: 1
+            },
+            {
+                question: "होलस्टिन गाईको बाछोको जन्म तौल कति हुन्छ?",
+                options: ["२८kg", "४५kg", "६०kg"],
+                answer: 1
+            },
+            {
+                question: "होलस्टिन गोरुलाई लडिहलन(लसङ्गहिर्ने) कलम महिनामा गरिन्छ?",
+                options: ["१ महिना", "३ महिना", "६ महिना"],
+                answer: 1
+            },
+            {
+                question: "होलस्टिन गोरुलाई मोती बनाउन कलम महिना लाग्छ?",
+                options: ["१०–१२ महिना", "२० महिना", "३० महिना"],
+                answer: 1
+            },
+            {
+                question: "जापान वाग्यु (Wagyu) को मुख्य विशेषता के हो?",
+                options: ["उच्च फ्याट मांस लिङ्ग", "धेरै दूध", "लामो बढ्ने"],
+                answer: 0
+            },
+            {
+                question: "वाग्युको मोती बनाउने अवधि कति हुन्छ?",
+                options: ["१० महिना", "२० महिना", "६ महिना"],
+                answer: 1
+            },
+            {
+                question: "वाग्युको जन्म तौल कति हुन्छ?",
+                options: ["४५kg", "२८kg", "३५kg"],
+                answer: 1
+            },
+            {
+                question: "वाग्युको मोती बनाउने क्रममा कुन रोग लाग्न सक्छ?",
+                options: ["रुमेन एल्सिडोसिस", "पखाला", "अमोनिया"],
+                answer: 0
+            },
+            {
+                question: "वाग्युको हङ्गो मासुको मूल्याङ्कनमा \"मार्बलिङ\" भन्नाले के बुझिन्छ?",
+                options: ["मासुमा बोसोको धसा(marbling)", "मासुको रङ्ग", "मासुको कडापन"],
+                answer: 0
+            },
+            {
+                question: "क्रसब्रीड(F1) गाई कुन दुई जातको मिश्रण हो?",
+                options: ["होलस्टिन र जसी", "होलस्टिन र जापान वाग्यु", "जापान वाग्यु र ब्राउन स्विस"],
+                answer: 1
+            },
+            {
+                question: "क्रसब्रीड गाईको जन्म तौल कति हुन्छ?",
+                options: ["३०kg", "४०kg", "५०kg"],
+                answer: 1
+            },
+            {
+                question: "बीफ क्याटल पालनको प्रजनन व्यवस्थापनमा गाईले कल्ट वर्ष सम्म लब्याउँछ?",
+                options: ["३–४ वर्ष", "७ वर्ष", "१०–१२ वर्ष"],
+                answer: 1
+            },
+            {
+                question: "बीफ क्याटललाई मोती बनाउँदा कन्सन्ट्रेटेड दानाको कुन सामग्री मुख्य रूपमा दिइन्छ?",
+                options: ["पराल", "साइलेज", "ताजा घाँस"],
+                answer: 0
+            },
+            {
+                question: "होलस्टिन गोरुलाई मोती बनाउँदा सन्तुलित दानाको परिमाण कति हुन्छ?",
+                options: ["२–३kg/दिन", "४–१२kg/दिन", "१५–२०kg/दिन"],
+                answer: 1
+            },
+            {
+                question: "बाछोलाई अमोनिया हुन नदिन के गर्नुपर्छ?",
+                options: ["गोठको अमोनिया हिर्ने", "धेरै पानी दिने", "प्रकाश कम गर्ने"],
+                answer: 0
+            },
+            {
+                question: "युरोलिथियासिस भन्नाले के बुझिन्छ?",
+                options: ["मुटुको ढुङ्गा", "मांसपेशीको रोग", "पाचन रोग"],
+                answer: 0
+            },
+            {
+                question: "ब्लोटिङ(ग्यास जमाउने) रोग कहाँ हुन्छ?",
+                options: ["पहिलो भुँडीमा", "फोक्सोमा", "खुरमा"],
+                answer: 0
+            },
+            {
+                question: "TMR (Total Mixed Ration) विधि के हो?",
+                options: ["रफेज र कन्सन्ट्रेटेड दाना मिसाएर दिने", "सुट्टै सुट्टै दिने", "पानीमा मिसाएर दिने"],
+                answer: 0
+            },
+            {
+                question: "साइलेज बनाउन के चाहिन्छ?",
+                options: ["अक्सिजन", "अक्सिजन रहित वातावरण", "प्रकाश"],
+                answer: 1
+            },
+            {
+                question: "घाँस काट्ने समय ढिलो हुँदा पौष्टिक मूल्यमा के हुन्छ?",
+                options: ["बढ्छ", "घट्छ", "उत्तै हुन्छ"],
+                answer: 1
+            },
+            {
+                question: "उत्कृष्ट दूधको गुणस्तरको लागि दूध फ्याटको अनुपात कति हुनुपर्छ?",
+                options: ["३.०% भन्दा कम", "३.९% वा सोभन्दा बढी", "२.५%"],
+                answer: 1
+            },
+            {
+                question: "सोम्याटिक सेलको सङ्ख्या कति भन्दा कम हुनुपर्छ?",
+                options: ["१० लाख/ml", "१० हजार/ml", "१ लाख/ml"],
+                answer: 1
+            },
+            {
+                question: "लबगौती दूधलाई के भलन्न?",
+                options: ["लबयाएको ५ दिन भित्रको दूध", "सुक्खा अवधिको दूध", "अन्तिम दूध"],
+                answer: 0
+            },
+            {
+                question: "लबगौती दूध लबकारीको लागि पठाउन हुँदैन?",
+                options: ["फ्याट कम हुन्छ", "तत्त्वहरू फरक हुन्छन्", "धेरै तातो हुन्छ"],
+                answer: 1
+            },
+            {
+                question: "गाईको दूधमा सेतो रक्तकोषको सङ्ख्या बढ्नुको संकेत हो?",
+                options: ["धुनेलो", "गर्भधारण", "धेरै आहार"],
+                answer: 0
+            },
+            {
+                question: "गाईको सुतको सुजन र दुखाइलाई के भलन्न?",
+                options: ["लालमुखी रिस", "मास्टाइटिस(धुनेलो)", "एल्सिडोसिस"],
+                answer: 1
+            },
+            {
+                question: "गाईको रुमेनको pH कम हुनुको कारण के हो?",
+                options: ["धेरै रफेज", "धेरै अन्न(स्टार्च)", "कम पानी"],
+                answer: 1
+            },
+            {
+                question: "गाईलाई पानीको गुणस्तर प्रतिको कति?",
+                options: ["सहनशील", "संवेदनशील", "कुनै असर पर्दैन"],
+                answer: 1
+            },
+            {
+                question: "गाईले एक दिनमा कति लिटर पानी पिउँछ?",
+                options: ["२०–३०L", "५०–१००L", "१०–१५L"],
+                answer: 1
+            },
+            {
+                question: "डेरी फार्मको गोबर व्यवस्थापन गर्ने कानुनी दायित्व के हो?",
+                options: ["सडा रोक्ने", "सही ढंगले कम्पोस्ट बनाउने", "नदीमा बगाउने"],
+                answer: 1
+            },
+            {
+                question: "कम्पोस्टलाई टिप्रेल डङ मिसेर रङ्गको रूपमा पुन:प्रयोग गर्दा के भलन्न?",
+                options: ["पुन:प्रयोग कम्पोस्ट", "टलरी", "मल"],
+                answer: 0
+            },
+            {
+                question: "टाई-स्टल गोठमा गाईको बेड(काउबेड) के हो?",
+                options: ["सुत्ने सुट्टै ठाउँ", "खाने ठाउँ", "दूध दुल्हने ठाउँ"],
+                answer: 0
+            },
+            {
+                question: "बाहिरको सरसफाई किन आवश्यक छ?",
+                options: ["ताजा पानीको लागि", "गाईको रंगको लागि", "दूध बढाउन"],
+                answer: 0
+            },
+            {
+                question: "गाईको दूध उत्पादनको लागि कुन भिटामिन महत्त्वपूर्ण छ?",
+                options: ["भिटामिन C", "भिटामिन A", "भिटामिन D"],
+                answer: 1
+            },
+            {
+                question: "होलस्टिन गाईको उत्पत्ति कहाँ भएको हो?",
+                options: ["जापान", "नेदरल्यान्ड", "अमेरिका"],
+                answer: 1
+            },
+            {
+                question: "जसी जातको गाईको रङ्ग कस्तो हुन्छ?",
+                options: ["सेतो", "फुस्रो(हल्का खैरो)", "कालो"],
+                answer: 1
+            }
+        ];
+
+        // Quiz state
+        let currentQuestion = 0;
+        let score = 0;
+        let timer = 10;
+        let timerInterval;
+        let shuffledQuestions = [];
+        let userAnswers = [];
+        let isDarkMode = false;
+        let gameEnded = false;
+
+        // DOM elements
+        const quizContainer = document.getElementById('quizContainer');
+        const questionContainer = document.getElementById('questionContainer');
+        const navButtons = document.getElementById('navButtons');
+        const resultContainer = document.getElementById('resultContainer');
+        const timerEl = document.getElementById('timer');
+        const progressFill = document.getElementById('progressFill');
+        const darkToggle = document.getElementById('darkToggle');
+
+        // Audio context for sound effects
+        let audioContext;
+
+        // Initialize quiz
+        function initQuiz() {
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            userAnswers = new Array(shuffledQuestions.length).fill(null);
+            currentQuestion = 0;
+            score = 0;
+            gameEnded = false;
+            showQuestion();
+            startTimer();
+        }
+
+        // Show current question
+        function showQuestion() {
+            if (currentQuestion >= shuffledQuestions.length) {
+                endQuiz();
+                return;
+            }
+
+            const q = shuffledQuestions[currentQuestion];
+            questionContainer.innerHTML = `
+                <div class="question-number">प्रश्न ${currentQuestion + 1} / ${shuffledQuestions.length}</div>
+                <div class="question">${q.question}</div>
+                <div class="options" id="options"></div>
+            `;
+
+            const optionsEl = document.getElementById('options');
+            q.options.forEach((option, index) => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'option';
+                optionEl.textContent = option;
+                optionEl.addEventListener('click', () => selectOption(index));
+                optionsEl.appendChild(optionEl);
+            });
+
+            updateProgress();
+            updateNavButtons();
+            highlightUserAnswer();
+        }
+
+        // Select option
+        function selectOption(index) {
+            if (gameEnded || userAnswers[currentQuestion] !== null) return;
+
+            userAnswers[currentQuestion] = index;
+            document.querySelectorAll('#options .option').forEach((el, i) => {
+                el.classList.remove('selected');
+                if (i === index) el.classList.add('selected');
+            });
+            clearInterval(timerInterval);
+        }
+
+        // Timer functions
+        function startTimer() {
+            timer = 10;
+            timerEl.textContent = timer;
+            timerInterval = setInterval(() => {
+                timer--;
+                timerEl.textContent = timer;
+                timerEl.classList.add('pulse');
+
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    if (userAnswers[currentQuestion] === null) {
+                        userAnswers[currentQuestion] = -1; // No answer
+                    }
+                    nextQuestion();
+                }
+            }, 1000);
+        }
+
+        // Next question
+        function nextQuestion() {
+            currentQuestion++;
+            if (currentQuestion < shuffledQuestions.length) {
+                showQuestion();
+                startTimer();
+            } else {
+                endQuiz();
+            }
+        }
+
+        // Previous question
+        function prevQuestion() {
+            clearInterval(timerInterval);
+            currentQuestion--;
+            showQuestion();
+            startTimer();
+        }
+
+        // Update progress bar
+        function updateProgress() {
+            const progress = ((currentQuestion + 1) / shuffledQuestions.length) * 100;
+            progressFill.style.width = progress + '%';
+        }
+
+        // Update navigation buttons
+        function updateNavButtons() {
+            navButtons.innerHTML = `
+                <button class="btn btn-secondary ${currentQuestion === 0 ? 'hidden' : ''}" id="prevBtn">अघिल्लो</button>
+                <button class="btn btn-primary" id="nextBtn">अर्को</button>
+            `;
+
+            document.getElementById('nextBtn').addEventListener('click', nextQuestion);
+            const prevBtn = document.getElementById('prevBtn');
+            if (prevBtn) {
+                prevBtn.addEventListener('click', prevQuestion);
+            }
+        }
+
+        // Highlight user's previous answer
+        function highlightUserAnswer() {
+            const userAnswer = userAnswers[currentQuestion];
+            if (userAnswer !== null) {
+                document.querySelectorAll('#options .option')[userAnswer].classList.add('selected');
+            }
+        }
+
+        // End quiz and show results
+        function endQuiz() {
+            gameEnded = true;
+            clearInterval(timerInterval);
+            
+            // Calculate final score
+            score = userAnswers.reduce((total, answer, index) => {
+                return total + (answer === shuffledQuestions[index].answer ? 1 : 0);
+            }, 0);
+
+            questionContainer.classList.add('hidden');
+            navButtons.classList.add('hidden');
+            resultContainer.classList.remove('hidden');
+            resultContainer.innerHTML = `
+                <div class="score">${score}/${shuffledQuestions.length}</div>
+                <div class="score-text">अभिनन्दन! तपाईंको स्कोर ${Math.round((score/shuffledQuestions.length)*100)}%</div>
+                <button class="btn btn-primary review-btn" onclick="reviewAnswers()">जवाफहरू हेर्नुहोस्</button>
+                <button class="btn btn-secondary review-btn" onclick="initQuiz()" style="margin-left: 10px;">फेरि खेल्नुहोस्</button>
+            `;
+        }
+
+        // Review answers
+        function reviewAnswers() {
+            resultContainer.innerHTML = '<div class="question" style="margin-bottom: 30px;">सबै प्रश्नहरूको समीक्षा गर्नुहोस्</div>';
+            shuffledQuestions.forEach((q, index) => {
+                const userAnswer = userAnswers[index];
+                const isCorrect = userAnswer === q.answer;
+                const div = document.createElement('div');
+                div.className = 'question-container';
+                div.style.marginBottom = '25px';
+                div.innerHTML = `
+                    <div class="question-number">प्रश्न ${index + 1}</div>
+                    <div class="question">${q.question}</div>
+                    <div style="font-weight: bold; color: ${isCorrect ? '#27ae60' : '#e74c3c'}; margin-bottom: 10px; font-size: 1.1em;">
+                        ${isCorrect ? '✅ सही जवाफ' : '❌ गलत जवाफ'} 
+                        ${userAnswer === -1 ? '(समय सकियो - जवाफ दिइएन)' : `तपाईंको छनोट: "${q.options[userAnswer]}"`}
+                        ${!isCorrect ? `<br><span style="color: #27ae60;">सही जवाफ: "${q.options[q.answer]}"</span>` : ''}
+                    </div>
+                `;
+                resultContainer.appendChild(div);
+            });
+            const restartBtn = document.createElement('button');
+            restartBtn.className = 'btn btn-primary review-btn';
+            restartBtn.style.marginTop = '30px';
+            restartBtn.textContent = 'नयाँ खेल सुरु गर्नुहोस्';
+            restartBtn.onclick = initQuiz;
+            resultContainer.appendChild(restartBtn);
+        }
+
+        // Sound effects
+        function playSound(frequency, duration, type = 'sine') {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = type;
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Dark mode toggle
+        darkToggle.addEventListener('click', () => {
+            isDarkMode = !isDarkMode;
+            document.body.classList.toggle('dark-mode');
+            darkToggle.textContent = isDarkMode ? '☀️' : '🌙';
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                e.preventDefault();
+                document.querySelector('.option.selected') ? nextQuestion() : null;
+            }
+            if (e.key === 'ArrowLeft' && currentQuestion > 0) {
+                prevQuestion();
+            }
+            if (e.key === 'ArrowRight') {
+                nextQuestion();
+            }
+        });
+
+        // Start quiz
+        initQuiz();
+    </script>
+</body>
+</html>
