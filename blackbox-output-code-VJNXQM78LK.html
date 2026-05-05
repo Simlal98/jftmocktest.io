@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="ne">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>कृषि खेती प्रश्नोत्तर - Agriculture Quiz</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding: 20px;
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        body.dark-mode .header {
+            background: rgba(0,0,0,0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            overflow: hidden;
+            margin-bottom: 20px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #4CAF50, #8BC34A);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        .question-container {
+            background: rgba(255,255,255,0.95);
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            text-align: center;
+            transform: translateY(0);
+            transition: all 0.3s ease;
+        }
+
+        body.dark-mode .question-container {
+            background: rgba(52,73,94,0.95);
+            color: #ecf0f1;
+        }
+
+        .question-number {
+            font-size: 1.2em;
+            color: #666;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        body.dark-mode .question-number {
+            color: #bdc3c7;
+        }
+
+        .question-text {
+            font-size: 1.4em;
+            font-weight: 700;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .option {
+            padding: 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.1em;
+            font-weight: 500;
+            background: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        body.dark-mode .option {
+            background: #34495e;
+            border-color: #5d6d7e;
+            color: #ecf0f1;
+        }
+
+        .option:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border-color: #667eea;
+        }
+
+        .option.selected {
+            border-color: #667eea;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .option.correct {
+            border-color: #4CAF50;
+            background: linear-gradient(135deg, #4CAF50, #8BC34A);
+            color: white;
+        }
+
+        .option.wrong {
+            border-color: #f44336;
+            background: linear-gradient(135deg, #f44336, #ef5350);
+            color: white;
+        }
+
+        .timer {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+        }
+
+        .timer.warning {
+            color: #ff9800;
+            animation: pulse 1s infinite;
+        }
+
+        .timer.danger {
+            color: #f44336;
+            animation: pulse 0.5s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #95a5a6;
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .score-container {
+            text-align: center;
+            padding: 60px 40px;
+        }
+
+        .score-circle {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3em;
+            font-weight: bold;
+            position: relative;
+        }
+
+        .score-circle.perfect { background: linear-gradient(135deg, #4CAF50, #8BC34A); color: white; }
+        .score-circle.good { background: linear-gradient(135deg, #FF9800, #FFB74D); color: white; }
+        .score-circle.average { background: linear-gradient(135deg, #FF5722, #FF8A65); color: white; }
+        .score-circle.poor { background: linear-gradient(135deg, #f44336, #ef5350); color: white; }
+
+        .score-text {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            font-weight: 700;
+        }
+
+        .controls {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .dark-toggle {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            padding: 10px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2em;
+            color: white;
+            backdrop-filter: blur(10px);
+        }
+
+        .dark-toggle:hover {
+            background: rgba(255,255,255,0.3);
+            transform: scale(1.1);
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+
+            .question-container {
+                padding: 25px 20px;
+            }
+
+            .question-text {
+                font-size: 1.2em;
+            }
+
+            .score-circle {
+                width: 150px;
+                height: 150px;
+                font-size: 2.5em;
+            }
+
+            .controls {
+                top: 10px;
+                right: 10px;
+            }
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="controls">
+        <button class="dark-toggle" id="darkToggle" title="डार्क मोड">🌙</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+                <div style="font-size: 1.1em; font-weight: 600;">
+                    प्रश्न <span id="currentQuestion">1</span> / <span id="totalQuestions">100</span>
+                </div>
+            </div>
+            <div id="scoreDisplay" class="hidden" style="font-size: 1.2em; font-weight: 700;">
+                स्कोर: <span id="currentScore">0</span>
+            </div>
+        </div>
+
+        <div id="quizContainer">
+            <div class="question-container">
+                <div class="question-number" id="questionNumber"></div>
+                <div class="question-text" id="questionText"></div>
+                <div class="timer" id="timer">10</div>
+                <div class="options" id="options"></div>
+            </div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="prevBtn" disabled>अघिल्लो</button>
+                <button class="btn btn-primary" id="nextBtn">अर्को</button>
+            </div>
+        </div>
+
+        <div id="scoreContainer" class="score-container hidden">
+            <div class="score-circle" id="scoreCircle">
+                <span id="finalScore">0</span>%
+            </div>
+            <div class="score-text" id="scoreMessage">उत्तम!</div>
+            <div style="font-size: 1.2em; margin-bottom: 30px;">
+                तपाईंको स्कोर: <span id="scoreDetail">0</span> / <span id="totalQ">100</span>
+            </div>
+            <div class="nav-buttons">
+                <button class="btn btn-primary" id="restartBtn">फेरि सुरु गर्नुहोस्</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Quiz data
+        const questions = [
+            { q: "१. समग्र कृषि खेतीको परीक्षामा जापानी भाषाको ज्ञान जाँच्ने प्रश्नहरू पनि समावेश हुन्छन्।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२. धान खेती भनेको धानको बोटको मात्र खेती हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३. संसारभरि धानको खेती मुख्यतया अफ्रिकामा गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४. जापानमा प्रायः इन्डिका धानको खेती गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "५. धानको बोटमा फल्ने फलको बाहिरी खोस्टो निकालेपछि बाँकी रहने फललाई चामल भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६. घरपालुवा पशुपन्छीको आहारा बनाउने धानको खेती गरिँदैन।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "७. धान कुट्ने कार्यलाई अहिले पनि परम्परागत तरिकाले मात्र गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "८. खुला खेतबारीका साथसाथै ग्रीन हाउस जस्ता संरक्षित संरचनामा तरकारी खेती गरिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "९. कन्दमूल तरकारीमा पात प्रयोग गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१०. उन्नत जात तथा खेती प्रविधिको सुधारद्वारा उच्च गुणस्तरको तरकारीको उत्पादन भइरहेको छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "११. एउटै जातिको तरकारीहरू बाह्रै महिना उत्पादन गर्नुलाई वार्षिक खेती भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१२. सदाबहार फलफूलको रूखको उदाहरण आरू हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१३. पतझर फलफूलका रूखहरूमा स्याउ, अङ्गूर, नासपाती पर्छन्।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "१४. पात, डाँठ र जरालाई प्रजनन अङ्ग भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१५. फूल र फललाई पोषण अङ्ग भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१६. पात, डाँठ, जरा ठूलो हुने विकासलाई प्रजनन विकास भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१७. फल र बीउ बनाउने विकासलाई पोषण विकास भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "१८. प्रकाश संश्लेषणको लागि प्रकाश, कार्बन डाइअक्साइड र पानी आवश्यक पर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "१९. बिरुवाले प्रकाश संश्लेषणद्वारा प्रोटिन बनाउँछ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "२०. प्रकाश जति तेज हुन्छ, बिरुवाले त्यति नै कम प्रकाश संश्लेषण गर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "२१. धेरै विकास भइरहेको बेला बिरुवाले कम सास फेर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "२२. राति उच्च तापक्रम भएमा बिरुवामा कम मात्रामा कार्बोहाइड्रेट बाँकी हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२३. बिरुवाको पातको स्टोमाटाबाट पानी बाष्प निस्केर जानुलाई वाष्पीकरण भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२४. बिरुवाले जराबाट माटोमा भएको पोषक तत्त्व र पानी सोस्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२५. गोलभाँडामा फूलको मुना छुटिनु तापक्रम र घामको समयमा मात्र निर्भर हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "२६. छोटो दिनको आवश्यकता पर्ने बिरुवा भनेको निश्चित समय भन्दा लामो समय अँध्यारो भएमा फूलको मुना छुट्टिने बिरुवा हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२७. सेवरी छोटो दिनको आवश्यकता पर्ने बिरुवा हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२८. अंकुरणको लागि पानी, तापक्रम र अक्सिजन आवश्यक हुन्छ। यसलाई अंकुरणका तीन सर्तहरू भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "२९. अंकुरणको तीन सर्तहरू कायम राख्नको लागि बीउलाई पानीले मात्र छोप्नुपर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "३०. प्रकाश पर्दा सजिलै उम्रने बीउलाई अँध्यारोमा उम्रने बीउ भनिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "३१. प्रकाशमा उम्रने बीउलाई बाक्लो गरी माटोले छोप्नुपर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "३२. अँध्यारोमा उम्रने बीउलाई बाक्लो गरी माटोले छोप्नुपर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३३. मूला र गाजरको बीउ सिधै खेतबारीमा रोपिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३४. पातल्याउने कार्य भनेको बिरुवा र बिरुवा बीचको दूरी बढाउनु मात्र हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "३५. बेना उमार्ने ठाउँलाई नर्सरी भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३६. फल तरकारी जस्तै गोलभाँडा र काँक्रोको बेना उमारिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३७. बेना उमार्दा वर्षा, हावाहुरीबाट बेनालाई बचाउन सकिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३८. बेना रोप्ने कार्यलाई बेना सार्ने भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "३९. हातले रोप्ने विधि भन्दा मेसिनले रोप्ने विधि छिटो हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४०. मेसिनले रोप्दा बेना समान रूपमा हुर्काउने जस्तो उच्च सीप आवश्यक हुँदैन।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४१. हातले रोप्ने विधिको लागि खर्च लाग्दैन।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "४२. हातले रोप्ने विधिमा कम परिश्रम गर्नुपर्दैन।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४३. बिरुवाको विकास अवस्था र माटोको अवस्था हेरेर मात्र सिँचाइ गर्नुपर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "४४. बिहानको समयमा र बेलुकी मात्र पानी हाल्नुपर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "४५. अभरहेड सिँचाइ भनेको बिरुवाको फेदमा पानी हाल्ने विधि हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४६. मध्य ग्रीष्मको दिउँसोको समयमा अभरहेड सिँचाइ गर्नु हुँदैन।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "४७. थोपा सिँचाइ भनेको फेद सिँचाइको एक प्रकार हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "४८. झाडको बीचमा पानी लगाउने सिँचाइ विधिमा थोरै मात्र पानी आवश्यक हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "४९. माटोको बनोट अनुसार पानी रोक्ने शक्ति र पानीको निकास फरक हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५०. एण्डसल माटो जापानको आधा खेतबारीमा पाइन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५१. होचो भू-भागको खरानी रङको माटो धानको खेतमा प्रयोग गरिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५२. ग्ले माटो पहाडी भागको खेतहरूमा पाइन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "५३. एकलित दाना भनेको माटोको कणको डल्लो हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५४. एकलित दानाको संरचना भएको माटो बिरुवाको खेतीको लागि उपयुक्त हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५५. एकलित दानाको संरचना भएको माटोमा हावाको आवतजावत राम्रो हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "५६. एकलित दानाको संरचना बढाउनको लागि कम्पोस्ट र प्राङ्गारिक पदार्थ हाल्नुपर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५७. माटोको तीन तहको संरचना भनेको कडा तह, तरल तह र हावाको तह हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "५८. राम्रो माटोमा कडा तह, तरल तह र हावाको तह, सबै ७०% हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "५९. माटोको उत्पादन शक्तिले समग्र माटोको उत्पादन क्षमता जनाउँछ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६०. उत्पादन शक्ति भएको माटोमा बिरुवा राम्रोसँग हुर्किँदैन।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "६१. चिया र ब्लूबेरीको लागि pH 8.9-9.0 उपयुक्त हुन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "६२. माटोको अम्लीयपना नाप्ने उपकरणको नाम सोइल एसिडिमिटर हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६३. मान्छे चढ्न मिल्ने ट्रयाक्टरलाई सामान्य ट्रयाक्टर भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६४. ट्रयाक्टर एक बहुउद्देश्यीय मेसिन हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६५. एकै बिरुवा एकै खेतबारीमा लगातार रोप्दा बिरुवा राम्रोसँग हुर्किन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "६६. लगातार खेतीको कारण हुने क्षति नियन्त्रणको उपायको रूपमा बाली चक्र अपनाइन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६७. नाइट्रोजन, फस्फोरस र पोटासियमलाई मलका तीन तत्त्व भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "६८. मलका तीन तत्त्वको प्रतीक नाइट्रोजन: P, फस्फोरिक एसिड: K, र पोटासियम: N हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "६९. नाइट्रोजनले मुख्यतया डाँठ र पातहरू लामो बनाउँछ र पातको रङ्ग गाढा बनाउँछ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७०. नाइट्रोजनको मात्रा बढी भएमा बोट बिरुवा बलियो भएर हुर्किन्छन्।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "७१. फस्फोरसले मुख्यतया फूल फुलाउने र फल फलाउने कुरालाई प्रभाव पार्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७२. छिटो लाग्ने मलले ३० दिनसम्म मात्र फाइदा गर्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७३. लामो अवधिसम्म बिस्तारै लाग्ने मलले १०-२० दिनको अवधिमा फाइदा गर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "७४. मललाई गोलो सिलिन्डर आकारमा प्रशोधन गरिएको मललाई पेलेट भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७५. बिरुवामा मल हाल्ने कार्यलाई मल हालाइ भनिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७६. आधार मल भनेको बिरुवा रोप्ने अगाडि हाल्ने मल हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "७७. थप मलको रूपमा बिस्तारै लाग्ने मल प्रयोग गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "७८. मल हाल्दा मलले बीउ र जरालाई सिधै छुने गरी हाल्नुपर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "७९. आवश्यकता भन्दा धेरै मल हालेमा माटोको नुनिलो तत्त्वको एकाग्रता बढी हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८०. नुनिलो तत्त्वको एकाग्रता पत्ता लगाउन pH मापन गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "८१. EC को उच्च मान भएको माटोमा धेरै मल बाँकी भएको हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८२. \"10-8-8\" भनेर लेखिएको संयुक्त मलमा नाइट्रोजनको मात्रा 10% हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८३. 20 किलोको \"10-8-8\" मलको बोरामा फस्फोरिक एसिडको मात्रा 1.6 किलो हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८४. झाड भनेको माटो थपेर अग्लो बनाएको बिरुवा रोप्ने ठाउँ हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८५. झाड बनाउने मुख्य उद्देश्य माटोमा पानी जम्मा गर्नु हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "८६. टुप्पो चुँड्नु भनेको डाँठको टुप्पो चुँडेर निकाल्ने कार्य हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८७. पार्श्व मुना भनेको डाँठ र पात जोडिएको ठाउँबाट पलाउने नयाँ मुना हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "८८. पात हटाउनाले हावाको आवतजावत कम हुन्छ र घाम कम पर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "८९. फल पतल्याउने कार्य सामान्यतया तरकारी खेतीमा मात्र गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९०. कृत्रिम पराग सेचन भनेको पराग सेचन प्राकृतिक वातावरणमा कृत्रिम रूपमा पराग सेचन गर्नु हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "९१. स्ट्रबेरीको पराग सेचनको लागि मुख्यतया भम्बल मौरी प्रयोग गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९२. हाँगा छाँटकाँट गर्दा बाली सङ्कलन परिमाण घट्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९३. थाँक्रो दिनु भनेको बोट बिरुवालाई उचित स्थितिमा राख्ने कार्य हो।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "९४. बाली सङ्कलन गर्दा अनुपयुक्त समयमा सङ्कलन गर्नुपर्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९५. गोलभाँडाको बाली सङ्कलनको समय रङ्ग लाग्न थालेपछि हुन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "९६. तरकारी, फूल र फलफूलको बाली सङ्कलन सधैं मेसिनले गरिन्छ।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९७. प्रि-कुलिङ भनेको खेतबारीबाट सङ्कलन गरिएको तरकारी र फलफूललाई तताउने कार्य हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९८. प्रि-कुलिङको उद्देश्य तरकारीको ताजापन बिगार्नु हो।", a: "B", options: ["A. सही", "B. गलत"], correct: 1 },
+            { q: "९९. प्रायः जस्तो प्रि-कुलिङ भ्याकुम विधिले गरिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 },
+            { q: "१००. टनेल खेतीको लागि टनेलको टेको र छोप्ने सामग्री प्रयोग गरिन्छ।", a: "A", options: ["A. सही", "B. गलत"], correct: 0 }
+        ];
+
+        // Game state
+        let shuffledQuestions = [];
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let answers = {};
+        let timer = 10;
+        let timerInterval;
+        let isAnswering = false;
+
+        // Audio context for sound effects
+        let audioContext;
+
+        // DOM elements
+        const elements = {
+            questionNumber: document.getElementById('questionNumber'),
+            questionText: document.getElementById('questionText'),
+            options: document.getElementById('options'),
+            timer: document.getElementById('timer'),
+            nextBtn: document.getElementById('nextBtn'),
+            prevBtn: document.getElementById('prevBtn'),
+            progressFill: document.getElementById('progressFill'),
+            currentQuestion: document.getElementById('currentQuestion'),
+            totalQuestions: document.getElementById('totalQuestions'),
+            currentScore: document.getElementById('currentScore'),
+            scoreDisplay: document.getElementById('scoreDisplay'),
+            quizContainer: document.getElementById('quizContainer'),
+            scoreContainer: document.getElementById('scoreContainer'),
+            scoreCircle: document.getElementById('scoreCircle'),
+            finalScore: document.getElementById('finalScore'),
+            scoreMessage: document.getElementById('scoreMessage'),
+            scoreDetail: document.getElementById('scoreDetail'),
+            totalQ: document.getElementById('totalQ'),
+            restartBtn: document.getElementById('restartBtn'),
+            darkToggle: document.getElementById('darkToggle')
+        };
+
+        // Initialize quiz
+        function initQuiz() {
+            shuffledQuestions = [...questions].sort(() => Math.random() - 0.5);
+            currentQuestionIndex = 0;
+            score = 0;
+            answers = {};
+            isAnswering = false;
+            
+            elements.scoreDisplay.classList.add('hidden');
+            elements.quizContainer.classList.remove('hidden');
+            elements.scoreContainer.classList.add('hidden');
+            
+            showQuestion();
+        }
+
+        // Show current question
+        function showQuestion() {
+            const q = shuffledQuestions[currentQuestionIndex];
+            elements.questionNumber.textContent = `प्रश्न ${currentQuestionIndex + 1}`;
+            elements.questionText.textContent = q.q;
+            elements.currentQuestion.textContent = currentQuestionIndex + 1;
+            elements.totalQuestions.textContent = shuffledQuestions.length;
+
+            // Show options
+            elements.options.innerHTML = '';
+            q.options.forEach((option, index) => {
+                const div = document.createElement('div');
+                div.className = 'option';
+                div.textContent = option;
+                div.dataset.index = index;
+                div.addEventListener('click', () => selectOption(index));
+                elements.options.appendChild(div);
+            });
+
+            // Reset timer
+            timer = 10;
+            elements.timer.textContent = timer;
+            elements.timer.className = 'timer';
+            
+            startTimer();
+
+            // Update progress
+            const progress = ((currentQuestionIndex + 1) / shuffledQuestions.length) * 100;
+            elements.progressFill.style.width = progress + '%';
+
+            // Update navigation
+            elements.prevBtn.disabled = currentQuestionIndex === 0;
+            elements.nextBtn.textContent = currentQuestionIndex === shuffledQuestions.length - 1 ? 'समाप्त गर्नुहोस्' : 'अर्को';
+
+            // Show previous answer if exists
+            if (answers[currentQuestionIndex] !== undefined) {
+                const prevOption = document.querySelector(`[data-index="${answers[currentQuestionIndex]}"]`);
+                if (prevOption) {
+                    prevOption.classList.add('selected');
+                }
+            }
+
+            updateScoreDisplay();
+        }
+
+        // Select option
+        function selectOption(index) {
+            if (isAnswering) return;
+
+            // Remove previous selections
+            document.querySelectorAll('.option').forEach(opt => {
+                opt.classList.remove('selected', 'correct', 'wrong');
+            });
+
+            // Mark selected
+            const selectedOption = document.querySelector(`[data-index="${index}"]`);
+            selectedOption.classList.add('selected');
+
+            answers[currentQuestionIndex] = index;
+            isAnswering = true;
+            clearInterval(timerInterval);
+
+            // Check answer after short delay
+            setTimeout(() => {
+                checkAnswer(index);
+            }, 500);
+        }
+
+        // Check if answer is correct
+        function checkAnswer(selectedIndex) {
+            const q = shuffledQuestions[currentQuestionIndex];
+            const options = document.querySelectorAll('.option');
+            
+            options.forEach((option, index) => {
+                if (index === q.correct) {
+                    option.classList.add('correct');
+                } else if (index === selectedIndex && index !== q.correct) {
+                    option.classList.add('wrong');
+                }
+            });
+
+            if (selectedIndex === q.correct) {
+                score++;
+                playSound(523.25, 0.2); // C5 note
+            } else {
+                playSound(349.23, 0.2); // F4 note
+            }
+
+            updateScoreDisplay();
+            isAnswering = false;
+        }
+
+        // Timer functions
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                timer--;
+                elements.timer.textContent = timer;
+
+                if (timer <= 6) elements.timer.classList.add('warning');
+                if (timer <= 3) elements.timer.classList.replace('warning', 'danger');
+
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    // Auto select first option or move next
+                    if (!answers[currentQuestionIndex]) {
+                        answers[currentQuestionIndex] = 0;
+                        setTimeout(() => nextQuestion(), 1000);
+                    }
+                }
+            }, 1000);
+        }
+
+        // Navigation
+        function nextQuestion() {
+            clearInterval(timerInterval);
+            if (currentQuestionIndex < shuffledQuestions.length - 1) {
+                currentQuestionIndex++;
+                showQuestion();
+            } else {
+                showResults();
+            }
+        }
+
+        function prevQuestion() {
+            clearInterval(timerInterval);
+            if (currentQuestionIndex > 0) {
+                currentQuestionIndex--;
+                showQuestion();
+            }
+        }
+
+        // Update score display
+        function updateScoreDisplay() {
+            const answeredCount = Object.keys(answers).length;
+            elements.currentScore.textContent = score;
+            if (answeredCount > 0) {
+                elements.scoreDisplay.classList.remove('hidden');
+            }
+        }
+
+        // Show results
+        function showResults() {
+            elements.quizContainer.classList.add('hidden');
+            elements.scoreContainer.classList.remove('hidden');
+            
+            const percentage = Math.round((score / shuffledQuestions.length) * 100);
+            elements.finalScore.textContent = percentage;
+            elements.scoreDetail.textContent = score;
+            elements.totalQ.textContent = shuffledQuestions.length;
+
+            let message = '';
+            let circleClass = '';
+            if (percentage >= 90) {
+                message = 'उत्तम! 👏';
+                circleClass = 'perfect';
+            } else if (percentage >= 75) {
+                message = 'राम्रो! 👍';
+                circleClass = 'good';
+            } else if (percentage >= 60) {
+                message = 'सुधार गर्न सकिन्छ! 💪';
+                circleClass = 'average';
+            } else {
+                message = 'फेरि प्रयास गर्नुहोस्! 📚';
+                circleClass = 'poor';
+            }
+
+            elements.scoreMessage.textContent = message;
+            elements.scoreCircle.className = `score-circle ${circleClass}`;
+        }
+
+        // Sound effects
+        function playSound(frequency, duration) {
+            if (!audioContext) {
+                audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            
+            oscillator.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.value = frequency;
+            oscillator.type = 'sine';
+            
+            gainNode.gain.setValueAtTime(0.3, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + duration);
+            
+            oscillator.start(audioContext.currentTime);
+            oscillator.stop(audioContext.currentTime + duration);
+        }
+
+        // Event listeners
+        elements.nextBtn.addEventListener('click', nextQuestion);
+        elements.prevBtn.addEventListener('click', prevQuestion);
+        elements.restartBtn.addEventListener('click', initQuiz);
+
+        // Dark mode toggle
+        elements.darkToggle.addEventListener('click', () => {
+            document.body.classList.toggle('dark-mode');
+            elements.darkToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️' : '🌙';
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (e.key === '1') selectOption(0);
+            if (e.key === '2') selectOption(1);
+            if (e.key === 'ArrowRight') nextQuestion();
+            if (e.key === 'ArrowLeft') prevQuestion();
+        });
+
+        // Initialize
+        initQuiz();
+    </script>
+</body>
+</html>
